@@ -67,4 +67,4 @@ func fbBotcitohook(w http.ResponseWriter, r *http.Request){
 	}
 }
 
-// "https://bot.golang-es.com/fbBotcitohook?hub.verify_token=my-secret-token&challenge=XXXXXXXXXXXXXX"
+// "https://gobotcito.ml/fbBotcitohook?hub.verify_token=my-secret-token&challenge=XXXXXXXXXXXXXX"

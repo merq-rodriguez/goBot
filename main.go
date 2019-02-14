@@ -11,6 +11,7 @@ type Config struct {
 	Port    string `json:"PORT"`
 	CertPem string `json:"CERT_PEM"`
 	KeyPem  string `json:"KEY_PEM"`
+	Token   string `json:"TOKEN"`
 }
 
 //Server configurations
@@ -21,6 +22,7 @@ var config Config
 func main() {
 	loadConfig()
 	http.HandleFunc("/", saludar)
+	http.HandleFunc("/fbBotcitohook", fbBotcitohook)
 
 	log.Printf("Server running in https://localhost%s", config.Port)
 	err := http.ListenAndServeTLS(config.Port, config.CertPem, config.KeyPem, nil)
@@ -48,3 +50,21 @@ func loadConfig(){
 	log.Println("Ending reading of the configuration file")
 
 }
+
+
+func fbBotcitohook(w http.ResponseWriter, r *http.Request){
+	if r.Method == http.MethodGet {
+		vt := r.URL.Query().Get("hub.verify_token")
+		if vt == config.Token {
+			hc := r.URL.Query().Get("hub.challenge")
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(hc))
+			return 
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid token")) 
+		return 
+	}
+}
+
+// "https://bot.golang-es.com/fbBotcitohook?hub.verify_token=my-secret-token&challenge=XXXXXXXXXXXXXX"

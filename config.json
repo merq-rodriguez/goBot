@@ -1,0 +1,5 @@
+{
+    "PORT":     ":4444",
+    "CERT_PEM": "./certificates/cert.pem",
+    "KEY_PEM":  "./certificates/key.pem"
+}
